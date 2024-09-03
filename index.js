@@ -77,6 +77,7 @@ app.delete("/api/courses/:id", (req, res) => {
   res.send(course);
 });
 
+//Validation
 function validateCourse(course) {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
