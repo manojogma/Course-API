@@ -1,15 +1,34 @@
-const express = require("express");
-const app = express();
-const Joi = require("joi");
-const courses = require('./routes/courses');
-const home = require('./routes/home');
-const logger = require('./middleware/logger');
+console.log('Before');
+ getUser(1, getRepositories);
+console.log('After');
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use('/api/courses', courses);
-app.use('/', home);
-app.use(logger);
+function displayCommits (commits) {
+  console.log(commits);
+}
 
-const port = process.env.PORT || 5000; 
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+function getCommits (repos) {
+  getCommits(repo, displayCommits);
+}
+
+function getRepositories (user) {
+  getRepositories(user.gitHubUsername, getCommits);
+}
+
+function getUser(id, callback) {
+  setTimeout(() => {
+    console.log('reading from a database...');
+    callback( { id: id, gitHubUsername: 'manoj'});
+  }, 2000);
+}
+
+function getRepositories(username, callback) {
+  setTimeout(() => {
+    console.log('reading from a github...');
+    callback ( ['repo1', 'repo2', 'repo3']);
+  }, 2000);
+}
+
+
+
+
+
