@@ -1,15 +1,11 @@
-const express = require("express");
-const app = express();
-const Joi = require("joi");
-const courses = require('./routes/courses');
-const home = require('./routes/home');
-const logger = require('./middleware/logger');
+const p = new Promise((resolve, reject) => {
+  //some async tasks
+  setTimeout(() =>{
+    resolve(1);
+    reject(new Error('message'));
+  },2000);
+});
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use('/api/courses', courses);
-app.use('/', home);
-app.use(logger);
-
-const port = process.env.PORT || 5000; 
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+p
+ .then(result => console.log('Result', result))
+ .catch(err => console.log('Error', err.message));
