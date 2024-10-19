@@ -1,15 +1,48 @@
-const express = require("express");
-const app = express();
-const Joi = require("joi");
-const courses = require('./routes/courses');
-const home = require('./routes/home');
-const logger = require('./middleware/logger');
+console.log('Before');
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use('/api/courses', courses);
-app.use('/', home);
-app.use(logger);
+//Promise based Approach
+// const p = getUser(1);
+// p.then(user => getRepositories(user.gitHubUsername))
+//  .then(repos => getCommits(repos[0]))
+//  .then(commits => console.log('Commits', commits))
+//  .catch(err => console.log('Error', err.message));
 
-const port = process.env.PORT || 5000; 
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+ //Async and Await Approach
+ async function displayCommits() {
+  const user = await getUser(1);
+ const repos = await getRepositories(user.gitHubUsername);
+ const commits = await getCommits(repos[0]);
+ console.log(commits);
+ }
+
+ displayCommits();
+
+console.log('After');
+
+function getUser(id) {
+  return new Promise ( (resolve, reject) => {
+    setTimeout(() => {
+      console.log('reading from a database...');
+      resolve( { id: id, gitHubUsername: 'manoj'});
+    }, 2000);
+  });
+}
+
+function getRepositories(username) {
+  return new Promise ((resolve, reject) => {
+    setTimeout(() => {
+      console.log('reading from a github...');
+      resolve ( ['repo1', 'repo2', 'repo3']);
+    }, 2000);
+  })
+}
+
+function getCommits(repo) {
+  return new Promise ((resolve, reject) => {
+    setTimeout ( () => {
+      console.log('Calling from Github Api...');
+      resolve(['commits']);
+    }, 2000);
+  });
+}
+
